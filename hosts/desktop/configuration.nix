@@ -166,6 +166,7 @@
     unrar
 
     # Daily Apps
+    brave
     kitty
     persepolis
     openrgb

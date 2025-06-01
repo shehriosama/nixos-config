@@ -5,8 +5,8 @@
   services.xserver.enable = true;
 
   # Enable GNOME.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
   services.gnome.core-shell.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
