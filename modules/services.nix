@@ -13,6 +13,11 @@
   # Optional: disable extra gnome utilities
   services.gnome.core-apps.enable = false;  
 
+  # Enable KDE.
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
+  # services.desktopManager.plasma6.enable = true;
+
   # Enable Flatpak.
   services.flatpak.enable = true;
 

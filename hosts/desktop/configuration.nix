@@ -47,6 +47,8 @@
   };
 
   programs.firefox.enable = true;
+  #programs.hyprland.enable = true;
+
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -242,6 +244,9 @@
     QT_QPA_PLATFORM = "wayland;xcb"; # Prefer Wayland but fall back to X11 (Good setting)
   };
 
+  # Optional, hint Electron apps to use Wayland:
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  
   environment.shells = with pkgs; [ zsh ];
   system.stateVersion = "25.05";
 
