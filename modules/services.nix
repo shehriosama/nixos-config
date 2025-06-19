@@ -1,12 +1,12 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
   # Enable GNOME.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   services.gnome.core-shell.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
@@ -39,4 +39,16 @@
   # Enable QEMU/KVM
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
+  
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+  # Enable OpenRGB
+  services.udev.packages = [ pkgs.openrgb ];
+
+  services.hardware.openrgb = { 
+    enable = true; 
+    package = pkgs.openrgb-with-all-plugins; 
+    motherboard = "amd"; 
+  };
 }

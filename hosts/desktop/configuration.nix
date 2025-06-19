@@ -15,6 +15,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.kernelModules = [ "i2c-dev" ];
+
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
@@ -36,6 +41,43 @@
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
 
+  hardware.i2c.enable = true;
+
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
+
+  hardware.nvidia = {
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of 
+    # supported GPUs is at: 
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Only available from driver 515.43.04+
+    open = false;
+
+    # Enable the Nvidia settings menu,
+	# accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+  
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -45,10 +87,6 @@
     description = "Osama";
     extraGroups = [ "wheel" "networkmanager" "libvirtd" ]; # Enable ‘sudo’ for the user.
   };
-
-  programs.firefox.enable = true;
-  #programs.hyprland.enable = true;
-
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -126,9 +164,6 @@
     gnome-themes-extra
     sassc
     morewaita-icon-theme
-    colloid-icon-theme
-    tela-icon-theme
-    tela-circle-icon-theme
     
     # Adwaita for Qt applications (CRUCIAL for GNOME integration)
     adwaita-qt      # For Qt5 apps
@@ -170,9 +205,12 @@
     # Daily Apps
     brave
     kitty
+    ghostty
     persepolis
     openrgb
+    openrgb-with-all-plugins
     mpv
+    blender
     emacs-pgtk
     # Office Apps
     thunderbird
@@ -187,29 +225,6 @@
     flatpak
     libwacom
   ];
-
-  # ZSH
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
-  # Virtualization
-  programs.virt-manager.enable = true;
-  virtualisation = {
-    libvirtd = {
-      enable = true;
-      qemu = {
-        vhostUserPackages = with pkgs; [ virtiofsd ];
-        # Enable TPM emulation (optional)
-        swtpm.enable = true;
-        ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
-    # Enable USB redirection (optional)
-    spiceUSBRedirection.enable = true;
-  };
-  services.spice-vdagentd.enable = true;
-  services.qemuGuest.enable = true;
 
   fonts.packages = with pkgs; [
     # Microsoft fonts
@@ -243,6 +258,33 @@
     QT_QPA_PLATFORMTHEME = "qt6ct"; # Direct Qt to use qt6ct for platform theming
     QT_QPA_PLATFORM = "wayland;xcb"; # Prefer Wayland but fall back to X11 (Good setting)
   };
+
+  programs.firefox.enable = true;
+
+  # ZSH
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
+  # Virtualization
+  programs.virt-manager.enable = true;
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu = {
+        vhostUserPackages = with pkgs; [ virtiofsd ];
+        # Enable TPM emulation (optional)
+        swtpm.enable = true;
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+      };
+    };
+    # Enable USB redirection (optional)
+    spiceUSBRedirection.enable = true;
+  };
+  services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
+
+
 
   # Optional, hint Electron apps to use Wayland:
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";
