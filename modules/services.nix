@@ -5,18 +5,18 @@
   services.xserver.enable = true;
 
   # Enable GNOME.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.gnome.core-shell.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  services.gvfs.enable = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  #services.gnome.core-shell.enable = true;
+  #services.gnome.gnome-keyring.enable = true;
+  #services.gvfs.enable = true;
   # Optional: disable extra gnome utilities
-  services.gnome.core-apps.enable = false;  
+  #services.gnome.core-apps.enable = false;  
 
   # Enable KDE.
-  # services.displayManager.sddm.enable = true;
-  # services.displayManager.sddm.wayland.enable = true;
-  # services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Enable Flatpak.
   services.flatpak.enable = true;
