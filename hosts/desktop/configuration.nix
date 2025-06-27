@@ -48,6 +48,16 @@
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
+    extraPackages = with pkgs; [
+      mesa
+      rocmPackages.clr.icd
+      libva
+      libvdpau-va-gl
+      vulkan-loader
+      vulkan-validation-layers
+      amdvlk  # Optional: AMD's proprietary Vulkan driver
+      mesa.opencl  # Enables Rusticl (OpenCL) support
+    ];
   };
 
   hardware.nvidia = {
@@ -57,6 +67,10 @@
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  hardware.nvidia-container-toolkit = {
+    enable = true;
   };
   
   # Enable touchpad support (enabled default in most desktopManager).
@@ -91,6 +105,9 @@
     podman
     nvidia-container-toolkit
     i2c-tools
+    clinfo
+    vulkan-tools
+    mesa-demos
 
     # Development Tools
     # C/C++
@@ -107,12 +124,13 @@
     gnome-themes-extra
     sassc
     libxml2
-    #glib
-    glibc
+    glib
+    # glibc
 
     # Theming for GTK/GNOME applications
     adw-gtk3
     morewaita-icon-theme
+    appmenu-glib-translator
     
     # Adwaita for Qt applications (CRUCIAL for GNOME integration)
     adwaita-qt      # For Qt5 apps
@@ -126,6 +144,7 @@
     #kdePackages.qt6ct                 # Qt6 configuration tool
     #kdePackages.qt6gtk2       	      # Qt6 GTK2 style plugin (helps with GTK integration)
     kdePackages.qtstyleplugin-kvantum # Qt6 Kvantum
+    darkly
 
     # KDE
     kdePackages.kdeconnect-kde
@@ -133,16 +152,25 @@
     kdePackages.kcalc
     kdePackages.filelight
     kdePackages.partitionmanager
+    kdePackages.sddm-kcm
+    kdePackages.kdevelop
+    kdePackages.korganizer
 
     # CLI Tools
     # Powerful
     zsh
+    atuin
     git
     ripgrep
     bat
     tmux
     fzf
     fd    
+    delta
+    eza
+    tldr
+    zoxide
+    vscode-fhs
     # Basics
     neovim
     vim
@@ -173,10 +201,11 @@
     thunderbird
     evince
     kdePackages.okular
-    libreoffice
+    libreoffice-qt-fresh
     hunspell
     hplip
     system-config-printer    
+    strawberry
 
     # Important packages
     flatpak
@@ -218,6 +247,13 @@
   #  QT_QPA_PLATFORM = "wayland;xcb"; # Prefer Wayland but fall back to X11 (Good setting)
   #};
 
+  # Run non-nix executables
+  programs.nix-ld.enable = true;
+  # programs.nix-ld.libraries = with pkgs; [
+  #   # Add any missing dynamic libraries for unpackaged programs
+  #   # here, NOT in environment.systemPackages
+  # ];
+
   programs.firefox.enable = true;
 
   # ZSH
@@ -237,6 +273,9 @@
         ovmf.packages = [ pkgs.OVMFFull.fd ];
       };
     };
+    podman = {
+      enable = true;
+    };
     # Enable USB redirection (optional)
     spiceUSBRedirection.enable = true;
   };
@@ -252,4 +291,3 @@
   system.stateVersion = "25.05";
 
 }
-

@@ -16,6 +16,10 @@
       url = "github:edolstra/nix-warez?dir=blender";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    atuin = {
+      url = "github:atuinsh/atuin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, kwin-effects-forceblur, ... } @ inputs:
@@ -25,7 +29,7 @@
   {
     nixpkgs.config.allowUnfree = true;
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
+      specialArgs = { inherit inputs; };
       system = "x86_64-linux";
       modules = [
         ./hosts/desktop/configuration.nix
