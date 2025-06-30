@@ -51,4 +51,6 @@
     package = pkgs.openrgb-with-all-plugins; 
     motherboard = "amd"; 
   };
+
+  services.dbus.enable = true;
 }

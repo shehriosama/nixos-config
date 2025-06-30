@@ -57,6 +57,7 @@
       vulkan-validation-layers
       amdvlk  # Optional: AMD's proprietary Vulkan driver
       mesa.opencl  # Enables Rusticl (OpenCL) support
+      libGL
     ];
   };
 
@@ -104,6 +105,8 @@
     distrobox
     podman
     nvidia-container-toolkit
+    ocl-icd
+    cudaPackages.cudatoolkit
     i2c-tools
     clinfo
     vulkan-tools
@@ -156,6 +159,9 @@
     kdePackages.kdevelop
     kdePackages.korganizer
 
+    # GNOME
+    gnome-disk-utility
+
     # CLI Tools
     # Powerful
     zsh
@@ -193,19 +199,22 @@
     openrgb
     openrgb-with-all-plugins
     mpv
-    # blender
-    blender_4_4
     emacs-pgtk
     qalculate-qt
     # Office Apps
     thunderbird
     evince
     kdePackages.okular
-    libreoffice-qt-fresh
+    libreoffice-fresh
     hunspell
     hplip
     system-config-printer    
     strawberry
+    # Studio Softwares
+    davinci-resolve
+    # blender
+    blender_4_4
+    audacity
 
     # Important packages
     flatpak
@@ -275,6 +284,7 @@
     };
     podman = {
       enable = true;
+      extraPackages = with pkgs; [ nvidia-container-toolkit ];
     };
     # Enable USB redirection (optional)
     spiceUSBRedirection.enable = true;
