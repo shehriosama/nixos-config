@@ -8,21 +8,21 @@
       url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kwin-effects-forceblur = {
-      url = "github:taj-ny/kwin-effects-forceblur";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    blender-bin = {
-      url = "github:edolstra/nix-warez?dir=blender";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # kwin-effects-forceblur = {
+    #   url = "github:taj-ny/kwin-effects-forceblur";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # blender-bin = {
+    #   url = "github:edolstra/nix-warez?dir=blender";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     atuin = {
       url = "github:atuinsh/atuin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, kwin-effects-forceblur, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
   let
     inherit (self) outputs;
   in
@@ -32,12 +32,12 @@
       specialArgs = { inherit inputs; };
       system = "x86_64-linux";
       modules = [
-        ./hosts/desktop/configuration.nix
-        {
-         environment.systemPackages = [
-           kwin-effects-forceblur.packages.x86_64-linux.default # Wayland
-         ];
-        }
+        ./hosts/laptop/configuration.nix
+        # {
+        #  environment.systemPackages = [
+        #    kwin-effects-forceblur.packages.x86_64-linux.default # Wayland
+        #  ];
+        # }
       ];
     };
 
